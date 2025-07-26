@@ -21,20 +21,21 @@ help:
 	echo "Available targets:" && \
 	awk -F: '/^[a-zA-Z_-]+:/ {print $$1}' Makefile | grep -v '^\.' | xargs -I{} printf "$(COLOR_CYAN)%s$(COLOR_RESET)\n" {}
 
-## setup: Run full setup script
-setup: 
-	@$(SCRIPT_DIR)/setup-all.sh 
-
-## all: Run all individual install scripts
+## all: Run all individual install scripts and print summary
 all:
-	@printf "%b\n" "$(COLOR_GREEN)[ALL]$(COLOR_RESET) Running all install scripts..."
-	@printf "%b\n" "$(COLOR_CYAN)[1/7]$(COLOR_RESET) Installing Git..." && $(MAKE) git
-	@printf "%b\n" "$(COLOR_CYAN)[2/7]$(COLOR_RESET) Installing pyenv..." && $(MAKE) pyenv
-	@printf "%b\n" "$(COLOR_CYAN)[3/7]$(COLOR_RESET) Installing Python..." && $(MAKE) python
-	@printf "%b\n" "$(COLOR_CYAN)[4/7]$(COLOR_RESET) Installing VSCode..." && $(MAKE) vscode
-	@printf "%b\n" "$(COLOR_CYAN)[5/7]$(COLOR_RESET) Installing Docker..." && $(MAKE) docker
-	@printf "%b\n" "$(COLOR_CYAN)[6/7]$(COLOR_RESET) Installing DBeaver..." && $(MAKE) dbeaver
-	@printf "%b\n" "$(COLOR_CYAN)[7/7]$(COLOR_RESET) Installing Chrome..." && $(MAKE) chrome
+	@START_TIME=$$(date +%s); \
+	printf "%b\n" "$(COLOR_GREEN)[ALL]$(COLOR_RESET) Running all install scripts..."; \
+	printf "%b\n" "$(COLOR_CYAN)[1/7]$(COLOR_RESET) Installing Git..." && $(MAKE) git; \
+	printf "%b\n" "$(COLOR_CYAN)[2/7]$(COLOR_RESET) Installing pyenv..." && $(MAKE) pyenv; \
+	printf "%b\n" "$(COLOR_CYAN)[3/7]$(COLOR_RESET) Installing Python..." && $(MAKE) python; \
+	printf "%b\n" "$(COLOR_CYAN)[4/7]$(COLOR_RESET) Installing VSCode..." && $(MAKE) vscode; \
+	printf "%b\n" "$(COLOR_CYAN)[5/7]$(COLOR_RESET) Installing Docker..." && $(MAKE) docker; \
+	printf "%b\n" "$(COLOR_CYAN)[6/7]$(COLOR_RESET) Installing DBeaver..." && $(MAKE) dbeaver; \
+	printf "%b\n" "$(COLOR_CYAN)[7/7]$(COLOR_RESET) Installing Chrome..." && $(MAKE) chrome; \
+	END_TIME=$$(date +%s); \
+	DURATION=$$((END_TIME-START_TIME)); \
+	MIN=$$((DURATION/60)); SEC=$$((DURATION%60)); \
+	printf "\n%b\n" "$(COLOR_GREEN)✅ All tools installed successfully in $${DURATION} seconds ($$(printf '%02d:%02d' $$MIN $$SEC))!$(COLOR_RESET)"
 
 ## git: Install Git 
 git:

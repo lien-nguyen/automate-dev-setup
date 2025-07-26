@@ -1,0 +1,8 @@
+.git/
+.DS_Store
+Thumbs.db
+Dockerfile
+README.md
+test_setup.sh
+manage-container.sh
+.dockerignore

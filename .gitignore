@@ -2,22 +2,4 @@ manage_container.sh
 helpers/add-headers.sh
 setup-user.sh
 img/
-# Python artifacts
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.pyc
-*.pyo
-*.pyd
-*.pyd
-*.so
 
-# Virtual environments
-venv/
-.venv/
-env/
-.env/
-
-# Python environment variables
-.Python

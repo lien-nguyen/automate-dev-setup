@@ -1,23 +1,40 @@
+
 SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
-.DEFAULT_GOAL := help 
+.DEFAULT_GOAL := help
 
 SCRIPT_DIR := setup-dev-env
 HELPERS_DIR := $(SCRIPT_DIR)/helpers
+
+# Color variables
+COLOR_CYAN  := \033[1;36m
+COLOR_GREEN := \033[1;32m
+COLOR_RESET := \033[0m
 
 .PHONY: help setup all git pyenv vscode docker dbeaver chrome headers lint clean
 
 ## help: Show all available Make targets
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## ' Makefile | \
-	awk 'BEGIN {FS = ":.*?## "}; {printf "%-15s %s\n", $$1, $$2}' 
+	@command -v grep >/dev/null 2>&1 && command -v awk >/dev/null 2>&1 && \
+	grep -E '^[a-zA-Z_-]+:.*?## ' Makefile | \
+	awk 'BEGIN {FS = ":.*?## "; cyan = "$(COLOR_CYAN)"; reset = "$(COLOR_RESET)"} {printf "%s%-15s%s %s\n", cyan, $$1, reset, $$2}' || \
+	echo "Available targets:" && \
+	awk -F: '/^[a-zA-Z_-]+:/ {print $$1}' Makefile | grep -v '^\.' | xargs -I{} printf "$(COLOR_CYAN)%s$(COLOR_RESET)\n" {}
 
 ## setup: Run full setup script
 setup: 
 	@$(SCRIPT_DIR)/setup-all.sh 
 
 ## all: Run all individual install scripts
-all: git pyenv python vscode docker dbeaver chrome
+all:
+	@printf "%b\n" "$(COLOR_GREEN)[ALL]$(COLOR_RESET) Running all install scripts..."
+	@printf "%b\n" "$(COLOR_CYAN)[1/7]$(COLOR_RESET) Installing Git..." && $(MAKE) git
+	@printf "%b\n" "$(COLOR_CYAN)[2/7]$(COLOR_RESET) Installing pyenv..." && $(MAKE) pyenv
+	@printf "%b\n" "$(COLOR_CYAN)[3/7]$(COLOR_RESET) Installing Python..." && $(MAKE) python
+	@printf "%b\n" "$(COLOR_CYAN)[4/7]$(COLOR_RESET) Installing VSCode..." && $(MAKE) vscode
+	@printf "%b\n" "$(COLOR_CYAN)[5/7]$(COLOR_RESET) Installing Docker..." && $(MAKE) docker
+	@printf "%b\n" "$(COLOR_CYAN)[6/7]$(COLOR_RESET) Installing DBeaver..." && $(MAKE) dbeaver
+	@printf "%b\n" "$(COLOR_CYAN)[7/7]$(COLOR_RESET) Installing Chrome..." && $(MAKE) chrome
 
 ## git: Install Git 
 git:

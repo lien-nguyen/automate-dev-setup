@@ -6,14 +6,14 @@ SHELL := /bin/bash
 SCRIPT_DIR := setup-dev-env
 HELPERS_DIR := $(SCRIPT_DIR)/helpers
 
-# Color variables
+# set color 
 COLOR_CYAN  := \033[1;36m
 COLOR_GREEN := \033[1;32m
 COLOR_RESET := \033[0m
 
 .PHONY: help setup all git pyenv vscode docker dbeaver chrome headers lint install-lint clean
 
-## help: Show all available Make targets
+# show all available Make targets
 help:
 	@command -v grep >/dev/null 2>&1 && command -v awk >/dev/null 2>&1 && \
 	grep -E '^[a-zA-Z_-]+:.*?## ' Makefile | \
@@ -21,12 +21,12 @@ help:
 	echo "Available targets:" && \
 	awk -F: '/^[a-zA-Z_-]+:/ {print $$1}' Makefile | grep -v '^\.' | xargs -I{} printf "$(COLOR_CYAN)%s$(COLOR_RESET)\n" {}
 
-## setup: Run full setup script
+# run full setup script
 setup: 
 	@$(SCRIPT_DIR)/setup-all.sh 
 
 
-## all: Run all individual install scripts and print summary
+# run all individual install scripts and print summary
 all:
 	@START_TIME=$$(date +%s); \
 	printf "%b\n" "$(COLOR_GREEN)[ALL]$(COLOR_RESET) Running all install scripts..."; \
@@ -42,45 +42,45 @@ all:
 	MIN=$$((DURATION/60)); SEC=$$((DURATION%60)); \
 	printf "\n%b\n" "$(COLOR_GREEN)✅ All tools installed successfully in $${DURATION} seconds ($$(printf '%02d:%02d' $$MIN $$SEC))!$(COLOR_RESET)"
 
-## git: Install Git 
+# install Git 
 git:
 	@$(SCRIPT_DIR)/install-git.sh 
 
-## pyenv: Install pyenv 
+# install pyenv 
 pyenv:
 	@$(SCRIPT_DIR)/install-pyenv.sh 
 
-## python: Install Python via pyenv
+# install Python via pyenv
 python:
 	@$(SCRIPT_DIR)/install-python.sh
 
-## vscode: Install Visual Studio Code
+# install Visual Studio Code
 vscode:
 	@$(SCRIPT_DIR)/install-vscode.sh  
 
-## docker: Install Docker
+# install Docker
 docker:
 	@$(SCRIPT_DIR)/install-docker.sh 
 
-## dbeaver: Install Dbeaver SQL Client 
+# install SQL Client 
 dbeaver:
 	@$(SCRIPT_DIR)/install-dbeaver.sh 
 
-## chrome: Install Google Chrome
+## install Google Chrome
 chrome:
 	@$(SCRIPT_DIR)/install-chrome.sh
 
-## lint: Run ShellCheck on all scripts
-lint:
-	@shellcheck $(SCRIPT_DIR)/*.sh $(HELPERS_DIR)/*.sh || true
-
-## install-lint: Install shellcheck linter (Debian/Ubuntu)
+# install shellcheck linter (Debian/Ubuntu)
 install-lint:
 	@echo -e "$(COLOR_CYAN)[LINT]$(COLOR_RESET) Installing shellcheck..."
 	sudo apt-get update && sudo apt-get install -y shellcheck
 	@echo -e "$(COLOR_GREEN)[LINT]$(COLOR_RESET) shellcheck installed."
 
-## clean: Remove downloaded .deb or temp files 
+# install ShellCheck on all scripts
+lint:
+	@shellcheck $(SCRIPT_DIR)/*.sh $(HELPERS_DIR)/*.sh || true
+
+# remove downloaded .deb or temp files 
 clean:
 	@rm -f  $(SCRIPT_DIR)/*.deb  $(SCRIPT_DIR)/*.gpg
 

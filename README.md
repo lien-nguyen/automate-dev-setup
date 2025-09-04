@@ -1,4 +1,3 @@
-
 # automate-dev-setup
 
 A collection of scripts and tools to quickly set up a complete development environment on Ubuntu, WSL, or inside a Docker container. Supports individual and full installs with easy Makefile orchestration.
@@ -7,16 +6,10 @@ A collection of scripts and tools to quickly set up a complete development envir
 
 You can use this repo to set up your development environment either inside a Docker container or directly on Ubuntu/WSL.
 
-## Prerequisites
-
-- Docker (if using container)
-- GNU Make
-- Bash
-
 ### 1. Clone the repo
 
 ```bash
-https://github.com/lien-nguyen/automate-dev-setup.git
+git clone https://github.com/lien-nguyen/automate-dev-setup.git
 cd automate-dev-setup
 ``` 
 
@@ -25,16 +18,34 @@ cd automate-dev-setup
 docker build -t devsetup .
 docker run -it --rm devsetup
 # inside the container:
-make all    # Installs all tools automatically
+make all   # Installs all tools automatically
 ```
 
 ### 3. Run directly on Ubuntu / WSL
 ```bash
-make all    # Installs all tools automatically
+make all  # Installs all tools automatically
 ```
 
+## What gets installed
+
+The setup scripts will automatically install the following development tools:
+
+- Git
+- pyenv (Python version manager)
+- Python 13.3.0 (via pyenv)
+- Visual Studio Code
+- Docker
+- DBeaver (SQL client)
+- Google Chrome
+
 > **Tip:**  
-> Use `make <tool>` to install a specific tool (e.g., `make docker`).
+> You can also install any of these tools individually using `make <tool>` (e.g., `make docker`).
+
+## Prerequisites
+
+- Docker (if using container)
+- GNU Make
+- Bash
 
 ## Notes
 
@@ -45,5 +56,3 @@ make all    # Installs all tools automatically
 	# for example:
 	pyenv install 3.12.2
 	```
-
-

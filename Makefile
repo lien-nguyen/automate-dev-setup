@@ -11,7 +11,7 @@ COLOR_CYAN  := \033[1;36m
 COLOR_GREEN := \033[1;32m
 COLOR_RESET := \033[0m
 
-.PHONY: help setup all git pyenv vscode docker dbeaver chrome headers lint install-lint clean
+.PHONY: help all git pyenv vscode docker dbeaver chrome headers clean
 
 # show all available Make targets
 help:
@@ -20,11 +20,6 @@ help:
 	awk 'BEGIN {FS = ":.*?## "; cyan = "$(COLOR_CYAN)"; reset = "$(COLOR_RESET)"} {printf "%s%-15s%s %s\n", cyan, $$1, reset, $$2}' || \
 	echo "Available targets:" && \
 	awk -F: '/^[a-zA-Z_-]+:/ {print $$1}' Makefile | grep -v '^\.' | xargs -I{} printf "$(COLOR_CYAN)%s$(COLOR_RESET)\n" {}
-
-# run full setup script
-setup: 
-	@$(SCRIPT_DIR)/setup-all.sh 
-
 
 # run all individual install scripts and print summary
 all:
@@ -70,15 +65,7 @@ dbeaver:
 chrome:
 	@$(SCRIPT_DIR)/install-chrome.sh
 
-# install shellcheck linter (Debian/Ubuntu)
-install-lint:
-	@echo -e "$(COLOR_CYAN)[LINT]$(COLOR_RESET) Installing shellcheck..."
-	sudo apt-get update && sudo apt-get install -y shellcheck
-	@echo -e "$(COLOR_GREEN)[LINT]$(COLOR_RESET) shellcheck installed."
 
-# install ShellCheck on all scripts
-lint:
-	@shellcheck $(SCRIPT_DIR)/*.sh $(HELPERS_DIR)/*.sh || true
 
 # remove downloaded .deb or temp files 
 clean:

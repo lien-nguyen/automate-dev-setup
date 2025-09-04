@@ -2,7 +2,7 @@
 
 Scripts to quickly set up a development environment on Ubuntu, WSL, or in a Docker container.
 
-## Quick Start
+### Quick Start
 
 1. **Clone the repo:**
    ```bash
@@ -25,7 +25,7 @@ Scripts to quickly set up a development environment on Ubuntu, WSL, or in a Dock
 
 > **Tip:** Use `make <tool>` to install a specific tool (e.g., `make docker`).
 
-## What Gets Installed
+### What Gets Installed
 
 - Git
 - pyenv (Python version manager)
@@ -35,13 +35,13 @@ Scripts to quickly set up a development environment on Ubuntu, WSL, or in a Dock
 - DBeaver (SQL client)
 - Google Chrome
 
-## Prerequisites
+### Prerequisites
 
 - Docker (if using container)
 - GNU Make
 - Bash
 
-## Notes
+### Notes
 
 - After installation, run `source ~/.bashrc` (or open a new terminal) to use pyenv and the installed Python versions.
 - Python 13.3.0 is installed by default. To install other Python versions:
@@ -53,9 +53,9 @@ Scripts to quickly set up a development environment on Ubuntu, WSL, or in a Dock
 
 ---
 
-## Advanced & Troubleshooting
+### Advanced & Troubleshooting
 
-### Verify Installation
+#### Verify Installation
 Check installed versions:
 ```bash
 python --version      # Python
@@ -66,7 +66,7 @@ code --version       # VSCode
 dbeaver --version    # DBeaver
 ```
 
-### Docker Permissions
+#### Docker Permissions
 If you see a Docker permission error:
 1. Start Docker:
    ```bash

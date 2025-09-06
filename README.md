@@ -28,7 +28,7 @@ Scripts to quickly set up a development environment directly on Ubuntu or WSL.
    git clone https://github.com/lien-nguyen/automate-dev-setup.git
    cd automate-dev-setup
    ```
-   
+
 2. **Run directly on Ubuntu/WSL (recommended):**
    ```bash
    sudo apt-get update
@@ -110,6 +110,11 @@ If you see a Docker permission error:
    ```
 
 ---
+## Contribution
 
+Contributions, suggestions, and feedback are welcome!  
+If you find any errors or have ideas for improvement, please open an issue or submit a pull request.
+
+Thank you for helping make this project better!
 
 

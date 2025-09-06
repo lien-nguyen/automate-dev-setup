@@ -1,31 +1,10 @@
 # automate-dev-setup
 
-Scripts to quickly set up a development environment on Ubuntu, WSL, or in a Docker container.
+Scripts to quickly set up a development environment directly on Ubuntu or WSL. 
 
-### Quick Start
+> ⚠️ **Note:** The Dockerfile is primarily for my own testing of the installation scripts on a WSL machine. The scripts themselves are intended to be run natively on Ubuntu or WSL for actual development use. If you only want to test the scripts, see below.
 
-1. **Clone the repo:**
-   ```bash
-   git clone https://github.com/lien-nguyen/automate-dev-setup.git
-   cd automate-dev-setup
-   ```
-
-2. **Run in Docker (recommended for testing):**
-   ```bash
-   docker build -t devsetup .
-   docker run -it --rm devsetup
-   # inside the container:
-   make all
-   ```
-
-3. **Run directly on Ubuntu/WSL:**
-   ```bash
-   make all
-   ```
-
-> **Tip:** Use `make <tool>` to install a specific tool (e.g., `make docker`).
-
-### What Gets Installed
+### What gets installed
 
 - Git
 - pyenv (Python version manager)
@@ -35,11 +14,30 @@ Scripts to quickly set up a development environment on Ubuntu, WSL, or in a Dock
 - DBeaver (SQL client)
 - Google Chrome
 
-### Prerequisites
+### Quick start
 
-- Docker (if using container)
-- GNU Make
-- Bash
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/lien-nguyen/automate-dev-setup.git
+   cd automate-dev-setup
+   ```
+
+
+2. **Run directly on Ubuntu/WSL (recommended):**
+   ```bash
+   sudo apt-get update
+   make all
+   ```
+
+3. **Test the scripts in Docker (optional, for script testing only):**
+   ```bash
+   docker build -t devsetup .
+   docker run -it --rm devsetup
+   # inside the container:
+   make all
+   ```
+
+> **Tip:** Use `make <tool>` to install a specific tool (e.g., `make docker`).
 
 ### Notes
 
@@ -49,7 +47,23 @@ Scripts to quickly set up a development environment on Ubuntu, WSL, or in a Dock
   pyenv install <version>
   # Example:
   pyenv install 3.12.2
+
+  # Show all installed Python versions
+  pyenv versions
+
+  # Switch to another Python version for the current directory
+  pyenv local 3.12.2 
+  
+  # or set the global Python version for all projects
+  pyenv global 3.12.2
   ```
+
+### Prerequisites
+
+- Ubuntu or WSL (Windows Subsystem for Linux)
+- GNU Make
+- Bash
+- Docker (required if you only want to test the scripts in a container)
 
 ---
 
@@ -62,6 +76,7 @@ python --version      # Python
 pyenv --version      # pyenv
 git --version        # Git
 docker --version     # Docker
+docker compose version
 code --version       # VSCode
 dbeaver --version    # DBeaver
 ```

@@ -45,7 +45,6 @@ Scripts to quickly set up a development environment directly on Ubuntu or WSL.
 
 > **Tip:** Use `make <tool>` to install a specific tool (e.g., `make docker`).
 
-
 ### Notes
 
 - After installation, run `source ~/.bashrc` (or open a new terminal) to use pyenv and the installed Python versions.
@@ -66,6 +65,18 @@ Scripts to quickly set up a development environment directly on Ubuntu or WSL.
   ```
 - For more information about pyenv, see the [pyenv official website](https://github.com/pyenv/pyenv).
 
+### Technical Details
+
+This project is organized for clarity and extensibility:
+
+- **Modular scripts:** Each tool (Git, pyenv, Python, VS Code, Docker, DBeaver, Chrome) has its own dedicated installation script in `setup-dev-env/`.
+- **Makefile automation:** The `Makefile` provides simple commands to install all tools at once or individually (e.g., `make all`, `make docker`).
+- **Testable in Docker:** A `Dockerfile` is included for testing the setup process in a clean, reproducible environment.
+- **Helper scripts:** Utility scripts (like loading pyenv) are separated for reuse and clarity.
+- **Error handling:** Scripts use `set -e` to stop on errors, and check for prerequisites before proceeding.
+- **Attribution:** References to official installation sources are included in each script for transparency.
+
+You can easily extend the setup by adding new scripts for additional tools and updating the `Makefile` accordingly.
 
 ### Prerequisites
 

@@ -1,32 +1,28 @@
 #!/bin/bash
 #
-# helpers/load_pyenv.sh
-#
-# Beschreibung: Lädt pyenv in die aktuelle Shell-Sitzung, wenn vorhanden.
-#
-# Autor: Lien Nguyen
-# Erstellt: 07.072025
-# Lizenz: MIT
+# Reference: Official installation instructions for pyenv  https://github.com/pyenv/pyenv#installation
+# Maintainer: Lien Nguyen
+# See LICENSE and README for details.
 #
 
 PYENV_ROOT="$HOME/.pyenv"
 
-# Überprüfen, ob pyenv überhaupt installiert ist
+# Check if pyenv is installed at all
 if [ ! -d "$PYENV_ROOT" ]; then
-  echo "❌ pyenv-Verzeichnis wurde nicht gefunden unter: $PYENV_ROOT" >&2
-  echo "ℹ️ Bitte stelle sicher, dass install_pyenv.sh erfolgreich ausgeführt wurde." >&2
+  echo "❌ pyenv directory was not found at: $PYENV_ROOT" >&2
+  echo "ℹ️ Please make sure that install_pyenv.sh was run successfully." >&2
   exit 1
 fi
 
-# Export und Initialisierung
+# Export and initialization
 export PYENV_ROOT
 export PATH="$PYENV_ROOT/bin:$PATH"
 
-# Sicherstellen, dass pyenv vorhanden ist
+# Ensure that pyenv is available
 if ! command -v pyenv >/dev/null 2>&1; then
-  echo "❌ pyenv konnte nicht gefunden werden – ist es korrekt installiert?" >&2
+  echo "❌ pyenv could not be found – is it installed correctly?" >&2
   exit 1
 fi
 
-# Initialisierung
+# Initialization
 eval "$(pyenv init --path)"

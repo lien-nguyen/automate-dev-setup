@@ -1,14 +1,19 @@
 #!/bin/bash
+#
+# Reference: Official installation instructions for python via pyenv https://github.com/pyenv/pyenv
+# Maintainer: Lien Nguyen
+# See LICENSE and README for details.
+#
 
 set -e
 
-# pyenv sofort initialisieren (nur für diese Session)
+# Initialize pyenv (only for this shell session)
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
-# pass die Python-Version an
+# Spycify python version
 PYTHON_VERSION="3.13.0"
 echo "Installing Python $PYTHON_VERSION using pyenv..."
 

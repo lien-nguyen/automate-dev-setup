@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Reference: Official installation instructions for Google Chrome https://www.google.com/chrome/
+# Maintainer: Lien Nguyen
+# See LICENSE and README for details.
+#
 
 set -e
 

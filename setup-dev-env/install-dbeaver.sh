@@ -1,4 +1,11 @@
 #!/bin/bash
+
+#
+# Reference: Official download page for DBeaver https://dbeaver.io/download/
+# Maintainer: Lien Nguyen
+# See LICENSE and README for details.
+#
+
 set -e
 
 echo "Installing DBeaver..."

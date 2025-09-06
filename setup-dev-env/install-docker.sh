@@ -1,6 +1,9 @@
 #!/bin/bash
-
-# Reference link: https://docs.docker.com/engine/install/ubuntu/
+#
+# Reference: Official installation instructions for docker https://docs.docker.com/engine/install/ubuntu/
+# Maintainer: Lien Nguyen
+# See LICENSE and README for details.
+#
 
 set -e
 

@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Reference: Official installation instructions for vscode https://code.visualstudio.com/docs/setup/linux
+# Maintainer: Lien Nguyen
+# See LICENSE and README for details.
+#
 
 set -e
 export DEBIAN_FRONTEND=noninteractive

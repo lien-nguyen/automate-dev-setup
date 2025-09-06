@@ -1,5 +1,12 @@
 # automate-dev-setup
 
+---
+**License & Attribution**
+
+This repository is licensed under the MIT License. While some installation commands are collected or adapted from official documentation and third-party sources, the automation, integration, and logic that make these tools work together are my own contributions. Original authorship is credited where possible; see script headers and comments for references. If you are an original author and wish to be credited or have your code removed, please open an issue or pull request.
+
+---
+
 Scripts to quickly set up a development environment directly on Ubuntu or WSL. 
 
 > ⚠️ **Note:** The Dockerfile is primarily for my own testing of the installation scripts on a WSL machine. The scripts themselves are intended to be run natively on Ubuntu or WSL for actual development use. If you only want to test the scripts, see below.
@@ -21,8 +28,7 @@ Scripts to quickly set up a development environment directly on Ubuntu or WSL.
    git clone https://github.com/lien-nguyen/automate-dev-setup.git
    cd automate-dev-setup
    ```
-
-
+   
 2. **Run directly on Ubuntu/WSL (recommended):**
    ```bash
    sudo apt-get update

@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Reference: Official installation instructions for pyenv  https://github.com/pyenv/pyenv#installation
+# Maintainer: Lien Nguyen
+# See LICENSE and README for details.
+#
 
 set -e
 echo "Installing pyenv dependencies..."
@@ -15,7 +20,7 @@ else
     echo "pyenv already installed." 
 fi 
 
-# Hinzufüge pyenv in shell config falls nicht vorhanden
+# Add pyenv in shell config 
 if ! grep -q 'pyenv init' ~/.bashrc; then 
     echo -e '\n# Pyenv setup' >> ~/.bashrc 
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc

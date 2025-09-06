@@ -1,24 +1,24 @@
 
 FROM ubuntu:24.04
 
-# Lösche Cache und installiere benötigte Tools
+# Remove cache and install required tools
 RUN apt-get update && apt-get install -y sudo make wget && rm -rf /var/lib/apt/list/*
 
-# Erstelle den Benutzer testadmin mit sudo-Rechten und ohnen Passwortabfrage
+# Create the user testadmin with sudo rights and no password prompt
 RUN useradd -m -s /bin/bash testadmin \
     && usermod -aG sudo testadmin \
     && echo 'testadmin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/testadmin
 
-# Erstelle einen Ordner für die Dev-Skripte
+# Create a folder for the dev scripts
 RUN mkdir -p /home/testadmin/devsetup
 
-# Kopiere alle Dateien in den devsetup-Ordner
+# Copy all files into the devsetup folder
 COPY . /home/testadmin/devsetup
 
-# Setze die Ausführungsrechte für alle Skripte rekursiv im setup-dev-env-Ordner
+# Set execute permissions recursively for all scripts in the setup-dev-env folder
 RUN find /home/testadmin/devsetup/setup-dev-env -type f -name "*.sh" -exec chmod +x {} \;
 
 USER testadmin
 
-# Setze WORKDIR auf den devsetup-Ordner
+# Set WORKDIR to the devsetup folder
 WORKDIR /home/testadmin/devsetup

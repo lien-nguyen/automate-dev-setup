@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Reference: Official installation instructions for git https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+# Maintainer: Lien Nguyen
+# See LICENSE and README for details.
+#
 
 set -e 
 

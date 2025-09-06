@@ -39,6 +39,7 @@ Scripts to quickly set up a development environment directly on Ubuntu or WSL.
 
 > **Tip:** Use `make <tool>` to install a specific tool (e.g., `make docker`).
 
+
 ### Notes
 
 - After installation, run `source ~/.bashrc` (or open a new terminal) to use pyenv and the installed Python versions.
@@ -57,6 +58,8 @@ Scripts to quickly set up a development environment directly on Ubuntu or WSL.
   # or set the global Python version for all projects
   pyenv global 3.12.2
   ```
+- For more information about pyenv, see the [pyenv official website](https://github.com/pyenv/pyenv).
+
 
 ### Prerequisites
 

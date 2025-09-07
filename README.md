@@ -13,13 +13,13 @@ Scripts to quickly set up a development environment directly on Ubuntu or WSL.
 
 ### What gets installed
 
-- Git
-- pyenv (Python version manager)
+- Git: https://git-scm.com
+- pyenv (Python version manager): https://github.com/pyenv/pyenv
 - Python 13.3.0 (via pyenv)
-- Visual Studio Code
-- Docker
-- DBeaver (SQL client)
-- Google Chrome
+- Visual Studio Code: https://code.visualstudio.com
+- Docker:  https://docs.docker.com
+- DBeaver (SQL client): https://dbeaver.io
+- Google Chrome: https://www.google.com/chrome/
 
 ### Quick start
 

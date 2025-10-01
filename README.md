@@ -2,6 +2,18 @@
 
 Scripts to quickly set up a development environment directly on Ubuntu. 
 
+## Table of Contents
+- [automate-dev-setup](#automate-dev-setup)
+  - [Table of Contents](#table-of-contents)
+    - [What gets installed](#what-gets-installed)
+    - [Quick start](#quick-start)
+    - [Notes](#notes)
+    - [Technical Details](#technical-details)
+    - [Prerequisites](#prerequisites)
+    - [Advanced \& Troubleshooting](#advanced--troubleshooting)
+      - [Verify Installation](#verify-installation)
+      - [Docker Permissions](#docker-permissions)
+  - [Contribution](#contribution)
 ---
 **License & Attribution**
 

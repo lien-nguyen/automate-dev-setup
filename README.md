@@ -1,5 +1,7 @@
 # automate-dev-setup
 
+Scripts to quickly set up a development environment directly on Ubuntu. 
+
 ---
 **License & Attribution**
 
@@ -7,7 +9,13 @@ This repository is licensed under the MIT License. While some installation comma
 
 ---
 
-Scripts to quickly set up a development environment directly on Ubuntu or WSL. 
+This setup script is **primarily designed for Ubuntu**.  
+For WSL, it's useful to test the scripts.  
+**If you want to use the scripts on WSL for tool installation:**
+
+> **Note for WSL Users:**  
+> Install Docker Desktop for Windows separately and do **not** run `make docker` or `make all` in the WSL terminal, as this will install Docker inside WSL and may cause problems.  
+> Install other tools like VS Code, pyenv, etc. with the respective `make <tool>` commands (e.g., `make vscode`, `make pyenv`).
 
 > ⚠️ **Note:** The Dockerfile is primarily for my own testing of the installation scripts on a WSL machine. The scripts themselves are intended to be run natively on Ubuntu or WSL for actual development use. If you only want to test the scripts, see below.
 
@@ -23,19 +31,25 @@ Scripts to quickly set up a development environment directly on Ubuntu or WSL.
 
 ### Quick start
 
-1. **Clone the repo:**
+**Note:** You need a basic Git installation to clone this repository. The setup scripts will upgrade Git to the latest version with proper binary files.
+
+1. **Install basic Git (if not already available):**
+   ```bash
+   sudo apt-get update && sudo apt-get install git
+
+2. **Clone the repo:**
    ```bash
    git clone https://github.com/lien-nguyen/automate-dev-setup.git
    cd automate-dev-setup
    ```
 
-2. **Run directly on Ubuntu/WSL (recommended):**
+3. **Run directly on Ubuntu/WSL (recommended):**
    ```bash
    sudo apt-get update
    make all
    ```
 
-3. **Test the scripts in Docker (optional, for script testing only):**
+4. **Test the scripts in Docker (optional, for script testing only):**
    ```bash
    docker build -t devsetup .
    docker run -it --rm devsetup
@@ -83,8 +97,8 @@ You can easily extend the setup by adding new scripts for additional tools and u
 - Ubuntu or WSL (Windows Subsystem for Linux)
 - GNU Make
 - Bash
-- Docker (required if you only want to test the scripts in a container)
-
+- Docker (only required if you want to test the scripts in a container)
+- For WSL users: Docker Desktop for Windows (installed separately)
 ---
 
 ### Advanced & Troubleshooting

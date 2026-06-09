@@ -7,11 +7,13 @@ Scripts to quickly set up a development environment directly on Ubuntu.
   - [Table of Contents](#table-of-contents)
     - [What gets installed](#what-gets-installed)
     - [Quick start](#quick-start)
+    - [Install tools individually](#install-tools-individually)
     - [Notes](#notes)
     - [Technical Details](#technical-details)
     - [Prerequisites](#prerequisites)
     - [Advanced \& Troubleshooting](#advanced--troubleshooting)
       - [Verify Installation](#verify-installation)
+      - [SSL Error when adding Git PPA (company network)](#ssl-error-when-adding-git-ppa-company-network)
       - [Docker Permissions](#docker-permissions)
   - [Contribution](#contribution)
 ---
@@ -27,9 +29,9 @@ For WSL, it's useful to test the scripts.
 
 > **Note for WSL Users:**  
 > Install Docker Desktop for Windows separately and do **not** run `make docker` or `make all` in the WSL terminal, as this will install Docker inside WSL and may cause problems.  
-> Install other tools like VS Code, pyenv, etc. with the respective `make <tool>` commands (e.g., `make vscode`, `make pyenv`).
+> For installing individual tools on WSL, see [Install tools individually](#install-tools-individually) below - skip `make docker`.
 
-> ⚠️ **Note:** The Dockerfile is primarily for my own testing of the installation scripts on a WSL machine. The scripts themselves are intended to be run natively on Ubuntu or WSL for actual development use. If you only want to test the scripts, see below.
+> ⚠️ **Note:** The Dockerfile is primarily for my own testing of the installation scripts on a WSL machine. The scripts themselves are intended to be run natively on Ubuntu, whether it is a VM, a VPC on the cloud, or a dedicated Ubuntu laptop. If you only want to test the scripts, see below.
 
 ### What gets installed
 
@@ -69,11 +71,34 @@ For WSL, it's useful to test the scripts.
    make all
    ```
 
-> **Tip:** Use `make <tool>` to install a specific tool (e.g., `make docker`).
+### Install tools individually
+
+You can install each tool separately in the following order:
+
+> **WSL Users:** Skip `make docker` - install Docker Desktop for Windows separately instead.
+
+```bash
+make git
+make pyenv
+```
+
+> **Important:** After installing pyenv, reload your shell before installing Python:
+> ```bash
+> exec $SHELL
+> ```
+
+```bash
+make python
+make vscode
+make docker
+make dbeaver
+make chrome
+```
+
+> **Note:** After installation, run `source ~/.bashrc` or open a new terminal to use pyenv and Python in your current session.
 
 ### Notes
 
-- After installation, run `source ~/.bashrc` (or open a new terminal) to use pyenv and the installed Python versions.
 - Python 13.3.0 is installed by default. To install other Python versions:
   ```bash
   pyenv install <version>
@@ -111,6 +136,8 @@ You can easily extend the setup by adding new scripts for additional tools and u
 - Bash
 - Docker (only required if you want to test the scripts in a container)
 - For WSL users: Docker Desktop for Windows (installed separately)
+
+> **Important:** Run the scripts as the user who will use the tools and not as root or another admin user. `pyenv` and Python are installed into `$HOME/.pyenv` and configured in `~/.bashrc`, so they are only available to the user who runs the scripts.
 ---
 
 ### Advanced & Troubleshooting
@@ -126,6 +153,26 @@ docker compose version
 code --version       # VSCode
 dbeaver --version    # DBeaver
 ```
+
+#### SSL Error when adding Git PPA (company network)
+
+> **Note:** This issue may occur when installing tools inside a VM on a company network.
+
+Corporate networks often use SSL inspection (MITM proxy): the proxy intercepts HTTPS traffic and re-signs certificates with the company's own root CA. A fresh VM does not trust this CA, so `add-apt-repository ppa:git-core/ppa` fails with an SSL error.
+
+**Confirm the cause:**
+```bash
+curl -v https://ppa.launchpad.net 2>&1 | grep -i "issuer\|ssl\|certificate"
+```
+If the certificate issuer shows a company name instead of a public CA (e.g. Let's Encrypt), it is the corporate proxy.
+
+**Fix - install the corporate root CA into the VM:**
+```bash
+# Ask IT for the company root CA certificate file, then:
+sudo cp company-ca.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+```
+After that, re-run the script. No firewall changes are needed.
 
 #### Docker Permissions
 If you see a Docker permission error:

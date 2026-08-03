@@ -15,6 +15,8 @@ Scripts to quickly set up a development environment directly on Ubuntu.
       - [Verify Installation](#verify-installation)
       - [SSL Error when adding Git PPA (company network)](#ssl-error-when-adding-git-ppa-company-network)
       - [Docker Permissions](#docker-permissions)
+      - [WSL: containers can't resolve DNS](#wsl-containers-cant-resolve-dns-apt-getpip-fail-with-temporary-failure-resolving)
+      - [WSL: Docker bridge MTU mismatch](#wsl-docker-bridge-mtu-mismatch-separate-issue-can-cause-corrupted-large-transfers)
   - [Contribution](#contribution)
 ---
 **License & Attribution**
@@ -23,15 +25,12 @@ This repository is licensed under the MIT License. While some installation comma
 
 ---
 
-This setup script is **primarily designed for Ubuntu**.  
-For WSL, it's useful to test the scripts.  
-**If you want to use the scripts on WSL for tool installation:**
+This setup script is designed for **Ubuntu, including Ubuntu on WSL**.  
+`make docker` and `make all` install Docker Engine natively via apt (the official Docker CE
+packages), so there is no need to install Docker Desktop for Windows separately - run the full
+`make all` directly in your WSL terminal.
 
-> **Note for WSL Users:**  
-> Install Docker Desktop for Windows separately and do **not** run `make docker` or `make all` in the WSL terminal, as this will install Docker inside WSL and may cause problems.  
-> For installing individual tools on WSL, see [Install tools individually](#install-tools-individually) below - skip `make docker`.
-
-> ⚠️ **Note:** The Dockerfile is primarily for my own testing of the installation scripts on a WSL machine. The scripts themselves are intended to be run natively on Ubuntu, whether it is a VM, a VPC on the cloud, or a dedicated Ubuntu laptop. If you only want to test the scripts, see below.
+> ⚠️ **Note:** The Dockerfile is primarily for my own testing of the installation scripts on a WSL machine. The scripts themselves are intended to be run natively on Ubuntu, whether it is a VM, a cloud instance (e.g. EC2), or a dedicated Ubuntu laptop. If you only want to test the scripts, see below.
 
 ### What gets installed
 
@@ -74,8 +73,6 @@ For WSL, it's useful to test the scripts.
 ### Install tools individually
 
 You can install each tool separately in the following order:
-
-> **WSL Users:** Skip `make docker` - install Docker Desktop for Windows separately instead.
 
 ```bash
 make git
@@ -134,8 +131,7 @@ You can easily extend the setup by adding new scripts for additional tools and u
 - Ubuntu or WSL (Windows Subsystem for Linux)
 - GNU Make
 - Bash
-- Docker (only required if you want to test the scripts in a container)
-- For WSL users: Docker Desktop for Windows (installed separately)
+- Docker (only required if you want to test the scripts in a container) - not needed for `make docker`, which installs it
 
 > **Important:** Run the scripts as the user who will use the tools and not as root or another admin user. `pyenv` and Python are installed into `$HOME/.pyenv` and configured in `~/.bashrc`, so they are only available to the user who runs the scripts.
 ---
@@ -192,6 +188,63 @@ If you see a Docker permission error:
    ```bash
    docker version
    ```
+
+#### WSL: containers can't resolve DNS (`apt-get`/`pip` fail with "Temporary failure resolving...")
+
+> **Note:** This only affects `make docker`'s native Docker Engine on WSL - Docker Desktop hides this by managing its own networking layer.
+
+**Symptom:** any `docker build` step that hits the network fails, e.g. `apt-get update` reports
+`Temporary failure resolving 'deb.debian.org'` and then `E: Unable to locate package <name>`, or
+`pip install` reports `Failed to resolve 'pypi.org' ([Errno -3] Temporary failure in name
+resolution)`. This happens for every image, every project - it is a host/daemon-level problem, not
+specific to one Dockerfile.
+
+**Root cause:** WSL auto-generates `/etc/resolv.conf` pointing at a special proxy address (e.g.
+`10.255.255.254`) that only works for processes running directly in the WSL VM's own network
+namespace. A Docker container sits behind the `docker0` bridge in its *own* separate network
+namespace, so it can't reach that address - DNS queries from inside the container just time out
+(`connection timed out; no servers could be reached`). Raw IP connectivity is unaffected (a
+container can `ping 8.8.8.8` or `wget` a bare IP just fine); only name resolution breaks, which is
+what makes the error message misleadingly point at "missing packages" instead of "no DNS".
+
+**Fix - give Docker's embedded DNS a real public resolver instead of relying on WSL's address:**
+```bash
+echo '{"dns": ["8.8.8.8", "1.1.1.1"]}' | sudo tee /etc/docker/daemon.json
+sudo systemctl restart docker
+```
+If `/etc/docker/daemon.json` already has other keys (e.g. `mtu`, see below), merge them into one
+JSON object rather than overwriting the file.
+
+**Verify the restart actually applied** (a `docker restart` that silently no-ops is easy to miss,
+especially if the sudo password prompt swallows the command's own output in an interactive
+terminal):
+```bash
+systemctl show docker --property=ActiveEnterTimestamp   # should be close to "now"
+docker run --rm alpine cat /etc/resolv.conf              # should show 8.8.8.8 / 1.1.1.1, not the old address
+```
+Then re-run the build.
+
+#### WSL: Docker bridge MTU mismatch (separate issue, can cause corrupted large transfers)
+
+> **Note:** This is a different failure mode from the DNS issue above - fix DNS first, since a DNS
+> failure looks similar (network-related build failures) but is unrelated to MTU.
+
+WSL2's network interface (`eth0`) commonly runs at MTU 1492, while Docker's default bridge network
+uses MTU 1500. Packets over 1492 bytes can get silently dropped or truncated, which can corrupt
+larger transfers during a build even once DNS itself is working.
+
+**Check for the mismatch:**
+```bash
+ip link show eth0 | grep mtu     # WSL interface MTU
+ip link show docker0 | grep mtu  # Docker bridge MTU
+```
+
+**Fix - pin Docker's MTU to match WSL's** (merge into the same `daemon.json` as the DNS fix above):
+```bash
+echo '{"mtu": 1492, "dns": ["8.8.8.8", "1.1.1.1"]}' | sudo tee /etc/docker/daemon.json
+sudo systemctl restart docker
+```
+If your WSL interface reports a different MTU, use that value instead of 1492.
 
 ---
 ## Contribution
